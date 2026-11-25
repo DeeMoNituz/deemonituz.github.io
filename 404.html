@@ -1,32 +1,90 @@
 <!DOCTYPE html>
-<html lang="th" data-theme="dark">
+<html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>กำลังเปลี่ยนเส้นทาง...</title>
-  <link rel="stylesheet" href="https://jsdelivr.net">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - กำลังเปลี่ยนเส้นทาง</title>
+  
+  <!-- 1. วาง Script ไว้บนสุดเพื่อให้ทำงานทันทีโดยไม่ต้องรอโหลดหน้าจอ -->
   <script>
-    // รายชื่อโปรเจกต์ที่ต้องการดักจับ (ใส่ตัวเล็กด้านซ้าย -> ตัวจริงด้านขวา)
     const routes = {
       '/akachia': '/Akachia'
     };
 
     const path = window.location.pathname;
     const lowerPath = path.toLowerCase();
+    let isRedirecting = false;
 
     for (const [wrongPrefix, correctPrefix] of Object.entries(routes)) {
       if (lowerPath === wrongPrefix || lowerPath.startsWith(wrongPrefix + '/')) {
+        isRedirecting = true;
         const newPath = correctPrefix + path.slice(wrongPrefix.length);
         window.location.replace(newPath + window.location.search + window.location.hash);
         break;
       }
     }
+
+    if (!isRedirecting) {
+      let seconds = 5;
+      window.addEventListener('DOMContentLoaded', () => {
+        const timerEl = document.getElementById('countdown');
+        const interval = setInterval(() => {
+          seconds--;
+          if (timerEl) timerEl.textContent = seconds;
+          if (seconds <= 0) {
+            clearInterval(interval);
+            window.location.replace('/Akachia/');
+          }
+        }, 1000);
+      });
+    }
   </script>
+
+  <!-- 2. เขียน CSS ฝังในไฟล์เลย ไม่ต้องรอโหลดจาก CDN ภายนอก -->
+  <style>
+    body {
+      background-color: #111317;
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 1rem;
+    }
+    .card {
+      background-color: #1e222a;
+      border: 1px solid #2d333f;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 480px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    h2 { margin-top: 0; color: #f8fafc; }
+    p { line-height: 1.6; color: #94a3b8; }
+    .btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #3b82f6;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+    .btn:hover { background-color: #2563eb; }
+  </style>
 </head>
 <body>
-  <main class="container" style="text-align: center; margin-top: 5rem;">
-    <h1>404 - ไม่พบหน้าที่คุณต้องการ</h1>
-    <p>ลิงก์นี้อาจถูกย้ายหรือพิมพ์ชื่อไม่ถูกต้อง</p>
-    <a href="/" role="button">กลับสู่หน้าหลัก</a>
-  </main>
+  <div class="card">
+    <h2>🧭 ไม่พบข้อมูลในพื้นที่นี้ (404)</h2>
+    <p>เส้นทางที่คุณเลือกไม่มีอยู่ในบันทึก หรือหน้านี้ถูกผนึกไว้</p>
+    <p style="font-size: 0.9rem;">
+      กำลังนำทางกลับสู่ <strong>Akachia</strong> ใน <span id="countdown">5</span> วินาที...
+    </p>
+    <a href="/Akachia/" class="btn">เดินทางกลับสู่ Akachia ทันที</a>
+  </div>
 </body>
 </html>
