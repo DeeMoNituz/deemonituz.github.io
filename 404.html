@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>กำลังเปลี่ยนเส้นทาง...</title>
+  <link rel="stylesheet" href="https://jsdelivr.net">
+  <script>
+    // รายชื่อโปรเจกต์ที่ต้องการดักจับ (ใส่ตัวเล็กด้านซ้าย -> ตัวจริงด้านขวา)
+    const routes = {
+      '/akachia': '/Akachia'
+    };
+
+    const path = window.location.pathname;
+    const lowerPath = path.toLowerCase();
+
+    for (const [wrongPrefix, correctPrefix] of Object.entries(routes)) {
+      if (lowerPath === wrongPrefix || lowerPath.startsWith(wrongPrefix + '/')) {
+        const newPath = correctPrefix + path.slice(wrongPrefix.length);
+        window.location.replace(newPath + window.location.search + window.location.hash);
+        break;
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="container" style="text-align: center; margin-top: 5rem;">
+    <h1>404 - ไม่พบหน้าที่คุณต้องการ</h1>
+    <p>ลิงก์นี้อาจถูกย้ายหรือพิมพ์ชื่อไม่ถูกต้อง</p>
+    <a href="/" role="button">กลับสู่หน้าหลัก</a>
+  </main>
+</body>
+</html>
